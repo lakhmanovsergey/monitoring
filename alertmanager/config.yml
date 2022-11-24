@@ -2,7 +2,6 @@ route:
   receiver: 'telegram'
   routes:
   - match:
-    severity: 'critical'
     receiver: 'telegram_kt'
       #    continue: true
       #  - match:
