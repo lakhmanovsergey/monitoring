@@ -49,7 +49,7 @@ groups:
       description: "Host storage usage is {{ humanize $value}}%."
 
   - alert: low_input_voltage
-    expr: (nut_info != 1) or (nut_input_voltage_volts < 200)
+    expr: (up{job="nut"} != 1) or (nut_input_voltage_volts < 200)
     for: 15s
     labels:
       severity: critical
