@@ -1,26 +1,19 @@
 groups:
 - name: targets
   rules:
-  - alert: node_service_down
-    expr: up{job=~"node-exporter.*"} == 0
-    for: 10m
-    labels:
-      severity: critical
-    annotations:
-      summary: "Node monitor service non-operational"
-      description: "Node {{ $labels.instance }} is down."
-
-#  - alert: snmp_service_down
-#    expr: up{job=~"snmp.*"} == 0
-#    for: 10m
-#    labels:
-#      severity: critical
-#    annotations:
-#      summary: "Monitor service non-operational"
-#      description: "SNMP target {{ $labels.instance }} is down."
 
 - name: host
   rules:
+
+  - alert: ping
+    expr: ping_loss_ratio{instance="ping:9427"} == 1
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Ping to host is unreachable"
+      description: "Ping target {{ $labels.target }} is down."
+
   - alert: high_cpu_load
     expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 90
     for: 15s
@@ -49,10 +42,28 @@ groups:
       description: "Host storage usage is {{ humanize $value}}%."
 
   - alert: low_input_voltage
-    expr: (up{job="nut"} != 1) or (nut_input_voltage_volts < 200)
+    expr: (up{job="nut"} == 0) or (nut_input_voltage_volts < 200)
     for: 15s
     labels:
       severity: critical
     annotations:
       summary: "Low voltage or UPS unavailable"
       description: "Input voltage or UPS connect error {{ humanize $value}}."
+
+  - alert: certificate_expire_14
+    expr: round(((ssl_cert_not_after - time() < 86400 * 14)) / 86400)
+    for: 15m
+    labels:
+      severity: warning
+    annotations:
+      summary: "The certificate is gouing to expire"
+      description: "The certicate cn={{ $labels.cn }} issuer_cn={{ $labels.issuer_cn }} serial number {{ $labels.iserial_no }} for {{ $labels.dnsnames }} will expire for {{ humanize $value}}."
+
+  - alert: certificate_expire_7
+    expr: round(((ssl_cert_not_after - time() < 86400 * 7)) / 86400) or (ssl_probe_success == 0)
+    for: 15m
+    labels:
+      severity: critical
+    annotations:
+      summary: "The certificate expires or failed!!!"
+      description: "The certicate cn={{ $labels.cn }} issuer_cn={{ $labels.issuer_cn }} serial number {{ $labels.iserial_no }} for {{ $labels.dnsnames }} will expire for {{ humanize $value}}."
