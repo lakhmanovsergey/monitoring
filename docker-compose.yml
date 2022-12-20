@@ -102,6 +102,7 @@ services:
       - "9093:9093"
       - "9116:9116"
       - "9427:9427"
+      - "9436:9436"
         #      - "9091:9091"
     volumes:
       - ./caddy:/etc/caddy
@@ -122,7 +123,7 @@ services:
       - ./snmp/snmp.yml:/etc/snmp_exporter/snmp.yml
     expose:
       - 9116
-    restart: always
+    restart: unless-stopped
     networks:
       - monitor-net
 
@@ -133,7 +134,7 @@ services:
       - ./ping/config:/config:ro
     expose:
       - 9427
-    restart: always
+    restart: unless-stopped
     networks:
       - monitor-net
 
@@ -142,6 +143,19 @@ services:
     container_name: certs
     expose:
       - 9219
-    restart: always
+    restart: unless-stopped
+    networks:
+      - monitor-net
+
+  mikrotik:
+    image: nshttpd/mikrotik-exporter:1.0.11
+    container_name: mikrotik
+    expose:
+      - 9436
+    volumes:
+      - ./mikrotik:/config
+    environment:
+      - CONFIG_FILE=/config/config.yml
+    restart: unless-stopped
     networks:
       - monitor-net

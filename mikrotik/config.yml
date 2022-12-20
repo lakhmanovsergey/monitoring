@@ -1,0 +1,51 @@
+devices:
+  - name: core_router
+    address: 172.24.0.1
+    user: prometheus
+    password: ***REMOVED***
+  - name: raskat_router
+    address: 172.24.98.1
+    user: prometheus
+    password: ***REMOVED***
+  - name: shalanda_router
+    address: 192.168.120.1
+    user: prometheus
+    password: ***REMOVED***
+  - name: anfisa_router
+    address: 192.168.130.1
+    user: prometheus
+    password: ***REMOVED***
+  - name: ulianov_router
+    address: 192.168.140.1
+    user: prometheus
+    password: ***REMOVED***
+      #  - name: my_second_router
+      #    address: 10.10.0.2
+      #    port: 8999
+      #    user: prometheus2
+      #    password: password_to_second_router
+      #  - name: routers_srv_dns
+      #    srv:
+      #      record: _mikrotik._udp.example.com
+      #    user: prometheus
+      #    password: password_to_all_dns_routers
+      #  - name: routers_srv_custom_dns
+      #    srv:
+      #      record: _mikrotik2._udp.example.com
+      #      dns:
+      #        address: 1.1.1.1
+      #        port: 53
+      #    user: prometheus
+      #    password: password_to_all_dns_routers
+
+features:
+  bgp: false
+  dhcp: true
+  dhcpv6: false
+  dhcpl: false
+  routes: true
+  pools: false
+  optics: false
+  health: true
+  lte: true
+  netwatch: true
