@@ -5,7 +5,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-    monitor: 'docker-host-alpha'
+    monitor: 'host-Anfisa'
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
@@ -19,84 +19,13 @@ scrape_configs:
     scrape_timeout: 60s
     static_configs:
       - targets:
-        - 192.168.120.201:9100
-        - 192.168.120.202:9100
+        - 192.168.130.201:9100
+        - 192.168.130.202:9100
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
         regex: '([^:]+)(:[0-9]+)?'
         replacement: '$1'
-
-          #  - job_name: 'snmp_mikrotik'
-          #    static_configs:
-          #      - targets:
-          #        - 192.168.120.1
-          #        - 192.168.130.1
-          #        - 192.168.140.1
-          #        - 192.168.131.1
-          #        - 172.24.0.1
-          #    metrics_path: /snmp
-          #    params:
-          #      module:
-          #        - mikrotik
-          #    scrape_interval: 5m
-          #    scrape_timeout: 5m
-          #    relabel_configs:
-          #      - source_labels: [__address__]
-          #        target_label: __param_target
-          #      - source_labels: [__param_target]
-          #        target_label: instance
-          #      - target_label: __address__
-          #        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
-          #
-
-        #  - job_name: 'snmp_switch'
-        #    static_configs:
-        #      - targets:
-        #        - 172.24.98.2
-        #    metrics_path: /snmp
-        #    params:
-        #      module: [if_mib]
-        #    scrape_interval: 180s
-        #    scrape_timeout: 150s
-        #    relabel_configs:
-        #      - source_labels: [__address__]
-        #        target_label: __param_target
-        #      - source_labels: [__param_target]
-        #        target_label: instance
-        #      - target_label: __address__
-        #        replacement: 172.24.98.51:9116  # The SNMP exporter's real hostname:port.
-
-        #  - job_name: 'snmp_synology'
-        #    static_configs:
-        #      - targets:
-        #        - 172.24.98.51
-        #    metrics_path: /snmp
-        #    params:
-        #      module: [synology]
-        #    scrape_interval: 20s
-        #    scrape_timeout: 15s
-        #    relabel_configs:
-        #      - source_labels: [__address__]
-        #        target_label: __param_target
-        #      - source_labels: [__param_target]
-        #        target_label: instance
-        #      - target_label: __address__
-        #        replacement: 172.24.98.51:9116  # The SNMP exporter's real hostname:port.
-
-          #  - job_name: "nut"
-          #    static_configs:
-          #      # Insert NUT server address here
-          #      - targets: ["localhost"]
-          #    metrics_path: /nut
-          #    relabel_configs:
-          #      - source_labels: [__address__]
-          #        target_label: __param_target
-          #      - source_labels: [__param_target]
-          #        target_label: instance
-          #      - target_label: __address__
-          #        # Insert NUT exporter address here
-          #        replacement: 172.24.98.51:9995
 
   - job_name: "mikrotik"
     static_configs:
