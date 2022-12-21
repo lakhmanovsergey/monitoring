@@ -6,7 +6,6 @@ networks:
 
 volumes:
     prometheus_data: {}
-    grafana_data: {}
 
 services:
 
@@ -31,6 +30,17 @@ services:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
+
+  snmp:
+    image: prom/snmp-exporter
+    container_name: snmp
+    volumes:
+      - ./snmp/snmp.yml:/etc/snmp_exporter/snmp.yml
+    ports:
+      - 9116:9116
+    restart: unless-stopped
+    networks:
+      - monitor-net
 
   mikrotik:
     image: nshttpd/mikrotik-exporter:1.0.11
