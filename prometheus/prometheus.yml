@@ -7,10 +7,6 @@ global:
   external_labels:
     monitor: 'host-shalanda'
 
-# Load and evaluate rules in this file every 'evaluation_interval' seconds.
-rule_files:
-  - "alert.rules"
-
 # A scrape configuration containing exactly one endpoint to scrape.
 scrape_configs:
 
