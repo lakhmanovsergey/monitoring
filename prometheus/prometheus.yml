@@ -15,19 +15,12 @@ rule_files:
 scrape_configs:
 
   - job_name: 'node-exporter'
-    scrape_interval: 60s
-    scrape_timeout: 60s
     static_configs:
       - targets:
         - 172.24.95.202:9100
         - 172.24.95.201:9100
-        - 192.168.120.201:9100
-        - 192.168.130.201:9100
-        - 192.168.140.201:9100
-        - 192.168.120.202:9100
-        - 192.168.130.202:9100
-        - 192.168.140.202:9100
         - 192.168.131.202:9100
+        - 172.24.98.101:9100
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
@@ -35,7 +28,7 @@ scrape_configs:
         replacement: '$1'
 
   - job_name: 'node-exporter-raskat'
-    scrape_interval: 15s
+    scrape_interval: 30s
     static_configs:
       - targets:
         - 172.24.98.101:9100
@@ -46,7 +39,7 @@ scrape_configs:
         replacement: '$1'
 
   - job_name: 'nvidia-gpu-exporter'
-    scrape_interval: 15s
+    scrape_interval: 30s
     static_configs:
       - targets:
         - 172.24.98.101:9835
@@ -189,8 +182,18 @@ scrape_configs:
       - targets:
         - mikrotik:9436
     metrics_path: /metrics
-    scrape_interval: 3m
-    scrape_timeout: 3m
+
+  - job_name: 'federate'
+    scrape_interval: 1m
+    honor_labels: true
+    metrics_path: '/federate'
+    params:
+      'match[]':
+        - '{job="node-exporter"}'
+        - '{job="mikrotik"}'
+    static_configs:
+      - targets:
+        - '192.168.120.8:9090'
 
   - job_name: 'pushgateway'
     scrape_interval: 10s
