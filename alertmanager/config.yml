@@ -3,9 +3,9 @@ route:
   routes:
   - match:
     receiver: 'telegram_kt'
-      #    continue: true
-      #  - match:
-      #    receiver: 'telegram'
+    continue: true
+  - match:
+    receiver: 'telegram_OPS'
 templates:
   - '/etc/alertmanager/templates/*.tmpl'
 receivers:
@@ -24,5 +24,13 @@ receivers:
         api_url: 'https://api.telegram.org'
         bot_token: '***REMOVED***'
         chat_id: -1001677807665
+        message: '{{ template "telegram_simple.html.message" . }}'
+        parse_mode: HTML
+  - name: 'telegram_OPS'
+    telegram_configs:
+      - send_resolved: true
+        api_url: 'https://api.telegram.org'
+        bot_token: '***REMOVED***'
+        chat_id: -1001703430358
         message: '{{ template "telegram_simple.html.message" . }}'
         parse_mode: HTML

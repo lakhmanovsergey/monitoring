@@ -27,17 +27,6 @@ scrape_configs:
         regex: '([^:]+)(:[0-9]+)?'
         replacement: '$1'
 
-  - job_name: 'node-exporter-raskat'
-    scrape_interval: 30s
-    static_configs:
-      - targets:
-        - 172.24.98.101:9100
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
-        regex: '([^:]+)(:[0-9]+)?'
-        replacement: '$1'
-
   - job_name: 'nvidia-gpu-exporter'
     scrape_interval: 30s
     static_configs:
@@ -191,9 +180,12 @@ scrape_configs:
       'match[]':
         - '{job="node-exporter"}'
         - '{job="mikrotik"}'
+        - '{job="snmp_apcups"}'
     static_configs:
       - targets:
         - '192.168.120.8:9090'
+        - '192.168.130.201:9090'
+        - '192.168.140.202:9090'
 
   - job_name: 'pushgateway'
     scrape_interval: 10s
