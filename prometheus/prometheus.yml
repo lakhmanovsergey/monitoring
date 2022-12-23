@@ -21,6 +21,24 @@ scrape_configs:
         regex: '([^:]+)(:[0-9]+)?'
         replacement: '$1'
 
+  - job_name: 'snmp_apcups'
+    static_configs:
+      - targets:
+        - 192.168.120.6
+        - 192.168.120.7
+    metrics_path: /snmp
+    params:
+      module: [apcups]
+    scrape_interval: 3m
+    scrape_timeout: 2m
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 192.168.120.8:9116  # The SNMP exporter's real hostname:port.
+
   - job_name: "mikrotik"
     static_configs:
       - targets:
