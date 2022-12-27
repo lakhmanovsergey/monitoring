@@ -173,7 +173,8 @@ scrape_configs:
     metrics_path: /metrics
 
   - job_name: 'federate'
-    scrape_interval: 1m
+    scrape_interval: 3m
+    scrape_timeout: 2m
     honor_labels: true
     metrics_path: '/federate'
     params:
