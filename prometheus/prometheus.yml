@@ -14,7 +14,8 @@ scrape_configs:
     static_configs:
       - targets:
         - 192.168.120.201:9100
-        - 192.168.120.202:9100
+        - 192.168.120.201:9100
+        - 192.168.120.101:9100
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
