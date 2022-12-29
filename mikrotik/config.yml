@@ -3,6 +3,10 @@ devices:
     address: 192.168.120.1
     user: prometheus
     password: ***REMOVED***
+  - name: shalanda_lte
+    address: 172.16.120.1
+    user: prometheus
+    password: ***REMOVED***
 
 features:
   bgp: false
