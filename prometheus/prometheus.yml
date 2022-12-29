@@ -26,6 +26,19 @@ scrape_configs:
       - targets:
         - 192.168.120.6
         - 192.168.120.7
+    metrics_path: /snmp
+    params:
+      module:
+        - apcups
+    scrape_interval: 2m
+    scrape_timeout: 2m
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
 
   - job_name: 'snmp_mikrotik'
     static_configs:
@@ -36,20 +49,7 @@ scrape_configs:
     params:
       module:
         - mikrotik
-    scrape_interval: 5m
-    scrape_timeout: 5m
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
-
-    metrics_path: /snmp
-    params:
-      module: [apcups]
-    scrape_interval: 3m
+    scrape_interval: 2m
     scrape_timeout: 2m
     relabel_configs:
       - source_labels: [__address__]
@@ -57,7 +57,7 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: 192.168.120.8:9116  # The SNMP exporter's real hostname:port.
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
 
   - job_name: "mikrotik"
     static_configs:
