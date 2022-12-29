@@ -1,6 +1,4 @@
 devices:
-  - name: shalanda_router
-    address: 192.168.120.1
     user: prometheus
     password: ***REMOVED***
 
