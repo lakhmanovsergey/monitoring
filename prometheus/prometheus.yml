@@ -39,8 +39,18 @@ scrape_configs:
       - target_label: __address__
         replacement: 192.168.130.201:9116  # The SNMP exporter's real hostname:port.
 
-  - job_name: "mikrotik"
-    static_configs:
-      - targets:
-        - mikrotik:9436
-    metrics_path: /metrics
+          #  - job_name: 'federate'
+          #    honor_labels: true
+          #    metrics_path: '/federate'
+          #    params:
+          #      'match[]':
+          #        - '{job="prometheus"}'
+          #    static_configs:
+          #      - targets:
+          #        - '192.168.130.101:9090'
+
+          #  - job_name: "mikrotik"
+          #    static_configs:
+          #      - targets:
+          #        - mikrotik:9436
+          #    metrics_path: /metrics

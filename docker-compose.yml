@@ -41,16 +41,16 @@ services:
     restart: unless-stopped
     networks:
       - monitor-net
-
-  mikrotik:
-    image: nshttpd/mikrotik-exporter:1.0.11
-    container_name: mikrotik
-    ports:
-      - 9436:9436
-    volumes:
-      - ./mikrotik:/config
-    environment:
-      - CONFIG_FILE=/config/config.yml
-    restart: unless-stopped
-    networks:
-      - monitor-net
+        #
+        #  mikrotik:
+        #    image: nshttpd/mikrotik-exporter:1.0.11
+        #    container_name: mikrotik
+        #    ports:
+        #      - 9436:9436
+        #    volumes:
+        #      - ./mikrotik:/config
+        #    environment:
+        #      - CONFIG_FILE=/config/config.yml
+        #    restart: unless-stopped
+        #    networks:
+        #      - monitor-net
