@@ -37,7 +37,7 @@ scrape_configs:
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: 192.168.140.202:9116  # The SNMP exporter's real hostname:port.
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
 
   - job_name: "mikrotik"
     static_configs:
