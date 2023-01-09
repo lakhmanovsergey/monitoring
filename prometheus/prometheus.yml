@@ -48,8 +48,8 @@ scrape_configs:
     params:
       module:
         - mikrotik
-    scrape_interval: 3m
-    scrape_timeout: 3m
+    scrape_interval: 5m
+    scrape_timeout: 5m
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
