@@ -42,7 +42,7 @@ services:
     networks:
       - monitor-net
 
-  ipmi_exporter:
+  ipmi:
     image: prometheuscommunity/ipmi-exporter:v1.6.1
     container_name: ipmi
     volumes:
