@@ -42,15 +42,16 @@ services:
     networks:
       - monitor-net
 
-        #  mikrotik:
-        #    image: nshttpd/mikrotik-exporter:1.0.11
-        #    container_name: mikrotik
-        #    ports:
-        #      - 9436:9436
-        #    volumes:
-        #      - ./mikrotik:/config
-        #    environment:
-        #      - CONFIG_FILE=/config/config.yml
-        #    restart: unless-stopped
-        #    networks:
-        #      - monitor-net
+  ipmi_exporter:
+    image: prometheuscommunity/ipmi-exporter:v1.6.1
+    container_name: ipmi
+    volumes:
+      - .ipmi/ipmi_remote.yml:/config.yml:ro    # replace with your own config
+    ports:
+      - 9290:9290                           # bind on 0.0.0.0
+      # - 127.0.0.1:9290:9290               # or bind to specific interface
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    command:
+      - '--config.file=/config.yml'
