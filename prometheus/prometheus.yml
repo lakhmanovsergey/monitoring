@@ -39,11 +39,60 @@ scrape_configs:
       - target_label: __address__
         replacement: snmp:9116  # The SNMP exporter's real hostname:port.
 
-  - job_name: "mikrotik"
+  - job_name: 'snmp_mikrotik'
     static_configs:
       - targets:
-        - mikrotik:9436
-    metrics_path: /metrics
+        - 192.168.120.1
+        - 172.16.120.1
+    metrics_path: /snmp
+    params:
+      module:
+        - mikrotik
+    scrape_interval: 2m
+    scrape_timeout: 2m
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
+
+          #  - job_name: "mikrotik"
+          #    static_configs:
+          #      - targets:
+          #        - mikrotik:9436
+          #    metrics_path: /metrics
+
+  - job_name: ipmi
+    params:
+      module: ['default']
+    scrape_interval: 1m
+    scrape_timeout: 30s
+    metrics_path: /ipmi
+    scheme: http
+    static_configs:
+      - targets:
+        - 192.168.140.9
+        - 192.168.140.10
+    relabel_configs:
+      - source_labels: [__address__]
+        separator: ;
+        regex: (.*)
+        target_label: __param_target
+        replacement: ${1}
+        action: replace
+      - source_labels: [__param_target]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: ${1}
+        action: replace
+      - separator: ;
+        regex: .*
+        target_label: __address__
+        replacement: ipmi:9290
+        action: replace
 
   - job_name: 'federate'
     honor_labels: true
