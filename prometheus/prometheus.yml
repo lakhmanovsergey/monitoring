@@ -43,7 +43,6 @@ scrape_configs:
     static_configs:
       - targets:
         - 192.168.130.1
-        - 172.16.130.1
     metrics_path: /snmp
     params:
       module:
