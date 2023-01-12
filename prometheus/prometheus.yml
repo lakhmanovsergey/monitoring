@@ -6,6 +6,9 @@ global:
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
     monitor: 'host-shalanda'
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "alert.rules"
 
 # A scrape configuration containing exactly one endpoint to scrape.
 scrape_configs:
@@ -104,4 +107,11 @@ scrape_configs:
     static_configs:
       - targets:
         - '192.168.120.101:9090'
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets: 
+      - '172.24.0.65:9093'
 
