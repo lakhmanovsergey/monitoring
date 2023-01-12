@@ -161,6 +161,7 @@ scrape_configs:
         - '{job="node-exporter"}'
         - '{job="mikrotik"}'
         - '{job="snmp_apcups"}'
+        - '{job="ipmi"}'
     static_configs:
       - targets:
         - '192.168.120.8:9090'
