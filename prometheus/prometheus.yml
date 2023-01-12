@@ -159,7 +159,6 @@ scrape_configs:
     params:
       'match[]':
         - '{job="node-exporter"}'
-        - '{job="mikrotik"}'
         - '{job="snmp_apcups"}'
         - '{job="ipmi"}'
     static_configs:
