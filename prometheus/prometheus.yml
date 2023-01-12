@@ -6,6 +6,9 @@ global:
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
     monitor: 'host-Anfisa'
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "alert.rules"
 
 # A scrape configuration containing exactly one endpoint to scrape.
 scrape_configs:
@@ -28,7 +31,8 @@ scrape_configs:
         - 192.168.130.7
     metrics_path: /snmp
     params:
-      module: [apcups]
+      module:
+        - apcups
     scrape_interval: 3m
     scrape_timeout: 3m
     relabel_configs:
@@ -103,3 +107,9 @@ scrape_configs:
       - targets:
         - '192.168.120.101:9090'
 
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets: 
+      - '172.24.0.65:9093'
