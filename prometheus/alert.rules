@@ -49,3 +49,12 @@ groups:
     annotations:
       summary: "Low  input UPS voltage"
       description: "Input {{ $labels.target }} voltage or UPS connect error {{ humanize $value}}."
+
+  - alert: temp_out_of_bounds
+    expr: upsAdvBatteryTemperature > 35 or upsAdvBatteryTemperature < 25
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: "UPS temperature out of bound"
+      description: "UPS {{ $labels.target }} temperature is {{ humanize $value}}."
