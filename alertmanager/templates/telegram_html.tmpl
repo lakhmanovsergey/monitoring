@@ -13,7 +13,7 @@
 {{ if eq .Status "firing"}}🔥 <b>{{ .Labels.alertname }}</b> 🔥{{ else }}✅ <b>{{ .Labels.alertname }}</b> ✅{{ end }}
 <b>Severity:</b>{{ .Labels.severity }}
 <b>Instance:</b>{{ .Labels.instance }}
-{{ if eq .Status "firing"}}<b>Summary:</b>{{ .Annotations.down_summary }}{{ else }}<b>Summary:</b>{{ .Annotations.up_summary }}{
+{{ if eq .Status "firing"}}<b>Summary:</b>{{ .Annotations.summary_down }}{{ else }}<b>Summary:</b>{{ .Annotations.summary_up }}{{ end }}
 <b>Description:</b>{{ .Annotations.description }}
 {{ end }}
 {{ end }}
