@@ -3,7 +3,7 @@ groups:
 - name: targets
   rules:
   - alert: node_service_down
-    expr: up{job!="federate"} == 0
+    expr: up{job!="prometheus",job!="federate"} == 0
     for: 5m
     labels:
       severity: critical
