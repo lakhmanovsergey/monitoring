@@ -19,7 +19,7 @@ scrape_configs:
       - targets:
         - 172.24.95.202:9100
         - 172.24.95.201:9100
-        - localhost:9100
+        - host.docker.internal:9100
           #- 192.168.131.202:9100
           #- 172.24.98.101:9100
     relabel_configs:
