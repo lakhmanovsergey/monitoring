@@ -25,12 +25,14 @@ services:
       - '--storage.tsdb.retention.size=8GB'
       - '--web.enable-lifecycle'
     restart: unless-stopped
-    expose:
-      - 9090
+    ports:
+      - '9090:9090'
     networks:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   alertmanager:
     image: prom/alertmanager:v0.24.0
@@ -41,12 +43,14 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
     restart: unless-stopped
-    expose:
-      - 9093
+    ports:
+      - '9093:9093'
     networks:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   grafana:
     image: grafana/grafana:9.1.1
@@ -61,12 +65,14 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
     restart: unless-stopped
-    expose:
-      - 3000
+    ports:
+      - '3000:3000'
     networks:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
         #  pushgateway:
         #    image: prom/pushgateway:v1.4.3
@@ -121,22 +127,26 @@ services:
     container_name: snmp
     volumes:
       - ./snmp/snmp.yml:/etc/snmp_exporter/snmp.yml
-    expose:
-      - 9116
+    ports:
+      - '9116:9116'
     restart: unless-stopped
     networks:
       - monitor-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   ping:
     image: czerwonk/ping_exporter
     container_name: ping
     volumes:
       - ./ping/config:/config:ro
-    expose:
-      - 9427
+    ports:
+      - '9427:9427'
     restart: unless-stopped
     networks:
       - monitor-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
         #
         #  certs:
         #    image: ribbybibby/ssl-exporter:2.4.2
