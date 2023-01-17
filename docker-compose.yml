@@ -92,6 +92,8 @@ services:
     command: -config.file=/etc/loki/local-config.yaml -log.level=warn
     networks:
       - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
 
   caddy:
     image: caddy:2.3.0
@@ -126,6 +128,8 @@ services:
     restart: unless-stopped
     networks:
       - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
 
   ping:
     image: czerwonk/ping_exporter
@@ -137,6 +141,8 @@ services:
     restart: unless-stopped
     networks:
       - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
 
   certs:
     image: ribbybibby/ssl-exporter:2.4.2
@@ -146,6 +152,8 @@ services:
     restart: unless-stopped
     networks:
       - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
 
         #  mikrotik:
         #    image: nshttpd/mikrotik-exporter:1.0.11
