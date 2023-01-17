@@ -38,7 +38,8 @@ groups:
     labels:
       severity: critical
     annotations:
-      summary: "Server storage is almost full"
+      summary_down: "Server storage is almost full"
+      summary_up: "Server storage value is enough"
       description: "Host {{ $labels.target }} storage usage is {{ humanize $value}}%."
 
   - alert: low_input_voltage
