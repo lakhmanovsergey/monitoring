@@ -41,6 +41,8 @@ services:
     restart: unless-stopped
     networks:
       - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
 
   ipmi:
     image: prometheuscommunity/ipmi-exporter:v1.6.1
@@ -55,3 +57,5 @@ services:
       - monitor-net
     command:
       - '--config.file=/config.yml'
+    labels:
+      org.label-schema.group: "monitoring"
