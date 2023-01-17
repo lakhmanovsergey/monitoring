@@ -19,160 +19,160 @@ scrape_configs:
       - targets:
         - 172.24.95.202:9100
         - 172.24.95.201:9100
-        - 192.168.131.202:9100
-        - 172.24.98.101:9100
+          #- 192.168.131.202:9100
+          #- 172.24.98.101:9100
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
         regex: '([^:]+)(:[0-9]+)?'
         replacement: '$1'
 
-  - job_name: 'nvidia-gpu-exporter'
-    scrape_interval: 30s
-    static_configs:
-      - targets:
-        - 172.24.98.101:9835
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: instance
-        regex: '([^:]+)(:[0-9]+)?'
-        replacement: '$1'
-
-  - job_name: 'snmp_mikrotik'
-    static_configs:
-      - targets:
-        - 172.24.0.1
-        - 172.24.98.1
-    metrics_path: /snmp
-    params:
-      module:
-        - mikrotik
-    scrape_interval: 5m
-    scrape_timeout: 5m
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
-
+          #  - job_name: 'nvidia-gpu-exporter'
+          #    scrape_interval: 30s
+          #    static_configs:
+          #      - targets:
+          #        - 172.24.98.101:9835
+          #    relabel_configs:
+          #      - source_labels: [__address__]
+          #        target_label: instance
+          #        regex: '([^:]+)(:[0-9]+)?'
+          #        replacement: '$1'
+          #
+          #  - job_name: 'snmp_mikrotik'
+          #    static_configs:
+          #      - targets:
+          #        - 172.24.0.1
+          #        - 172.24.98.1
+          #    metrics_path: /snmp
+          #    params:
+          #      module:
+          #        - mikrotik
+          #    scrape_interval: 5m
+          #    scrape_timeout: 5m
+          #    relabel_configs:
+          #      - source_labels: [__address__]
+          #        target_label: __param_target
+          #      - source_labels: [__param_target]
+          #        target_label: instance
+          #      - target_label: __address__
+          #        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
+          #
   - job_name: 'prometheus'
     scrape_interval: 10s
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'pve-exporter'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['172.24.0.52:9221']
-    metrics_path: /pve
-    params:
-      module: [default]
-
-  - job_name: 'snmp_switch'
-    static_configs:
-      - targets:
-        - 172.24.98.2
-    metrics_path: /snmp
-    params:
-      module: [if_mib]
-    scrape_interval: 180s
-    scrape_timeout: 150s
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 172.24.98.51:9116  # The SNMP exporter's real hostname:port.
-
-  - job_name: 'snmp_synology'
-    static_configs:
-      - targets:
-        - 172.24.98.51
-    metrics_path: /snmp
-    params:
-      module: [synology]
-    scrape_interval: 20s
-    scrape_timeout: 15s
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 172.24.98.51:9116  # The SNMP exporter's real hostname:port.
-
-  - job_name: "nut"
-    static_configs:
-      # Insert NUT server address here
-      - targets: ["localhost"]
-    metrics_path: /nut
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        # Insert NUT exporter address here
-        replacement: 172.24.98.51:9995
-
-  - job_name: "ping"
-    static_configs:
-      - targets:
-        - ping:9427
-    metrics_path: /metrics
-
-  - job_name: "ssl"
-    metrics_path: /probe
-    scrape_interval: 180s
-    scrape_timeout: 150s
-    params:
-      module: ["https"]
-    static_configs:
-      - targets:
-        - artifacts.ops.steor.ru:443
-        - gitlab.ops.steor.ru:443
-        - vaultwarden.ops.steor.ru:443
-        - glp.ops.steor.ru:443
-
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: certs:9219
-
-  - job_name: "mikrotik"
-    static_configs:
-      - targets:
-        - mikrotik:9436
-    metrics_path: /metrics
-
-  - job_name: 'federate'
-    scrape_interval: 3m
-    scrape_timeout: 2m
-    honor_labels: true
-    metrics_path: '/federate'
-    params:
-      'match[]':
-        - '{job="node-exporter"}'
-        - '{job="snmp_apcups"}'
-        - '{job="ipmi"}'
-    static_configs:
-      - targets:
-        - '192.168.120.8:9090'
-        - '192.168.130.202:9090'
-        - '192.168.140.202:9090'
-
-          #  - job_name: 'pushgateway'
-          #    scrape_interval: 10s
-          #    honor_labels: true
-          #    static_configs:
-          #      - targets: ['pushgateway:9091']
-
+        #  - job_name: 'pve-exporter'
+        #    scrape_interval: 5s
+        #    static_configs:
+        #      - targets: ['172.24.0.52:9221']
+        #    metrics_path: /pve
+        #    params:
+        #      module: [default]
+        #
+        #  - job_name: 'snmp_switch'
+        #    static_configs:
+        #      - targets:
+        #        - 172.24.98.2
+        #    metrics_path: /snmp
+        #    params:
+        #      module: [if_mib]
+        #    scrape_interval: 180s
+        #    scrape_timeout: 150s
+        #    relabel_configs:
+        #      - source_labels: [__address__]
+        #        target_label: __param_target
+        #      - source_labels: [__param_target]
+        #        target_label: instance
+        #      - target_label: __address__
+        #        replacement: 172.24.98.51:9116  # The SNMP exporter's real hostname:port.
+        #
+        #  - job_name: 'snmp_synology'
+        #    static_configs:
+        #      - targets:
+        #        - 172.24.98.51
+        #    metrics_path: /snmp
+        #    params:
+        #      module: [synology]
+        #    scrape_interval: 20s
+        #    scrape_timeout: 15s
+        #    relabel_configs:
+        #      - source_labels: [__address__]
+        #        target_label: __param_target
+        #      - source_labels: [__param_target]
+        #        target_label: instance
+        #      - target_label: __address__
+        #        replacement: 172.24.98.51:9116  # The SNMP exporter's real hostname:port.
+        #
+        #  - job_name: "nut"
+        #    static_configs:
+        #      # Insert NUT server address here
+        #      - targets: ["localhost"]
+        #    metrics_path: /nut
+        #    relabel_configs:
+        #      - source_labels: [__address__]
+        #        target_label: __param_target
+        #      - source_labels: [__param_target]
+        #        target_label: instance
+        #      - target_label: __address__
+        #        # Insert NUT exporter address here
+        #        replacement: 172.24.98.51:9995
+        #
+        #  - job_name: "ping"
+        #    static_configs:
+        #      - targets:
+        #        - ping:9427
+        #    metrics_path: /metrics
+        #
+        #  - job_name: "ssl"
+        #    metrics_path: /probe
+        #    scrape_interval: 180s
+        #    scrape_timeout: 150s
+        #    params:
+        #      module: ["https"]
+        #    static_configs:
+        #      - targets:
+        #        - artifacts.ops.steor.ru:443
+        #        - gitlab.ops.steor.ru:443
+        #        - vaultwarden.ops.steor.ru:443
+        #        - glp.ops.steor.ru:443
+        #
+        #    relabel_configs:
+        #      - source_labels: [__address__]
+        #        target_label: __param_target
+        #      - source_labels: [__param_target]
+        #        target_label: instance
+        #      - target_label: __address__
+        #        replacement: certs:9219
+        #
+        #  - job_name: "mikrotik"
+        #    static_configs:
+        #      - targets:
+        #        - mikrotik:9436
+        #    metrics_path: /metrics
+        #
+        #  - job_name: 'federate'
+        #    scrape_interval: 3m
+        #    scrape_timeout: 2m
+        #    honor_labels: true
+        #    metrics_path: '/federate'
+        #    params:
+        #      'match[]':
+        #        - '{job="node-exporter"}'
+        #        - '{job="snmp_apcups"}'
+        #        - '{job="ipmi"}'
+        #    static_configs:
+        #      - targets:
+        #        - '192.168.120.8:9090'
+        #        - '192.168.130.202:9090'
+        #        - '192.168.140.202:9090'
+        #
+        #          #  - job_name: 'pushgateway'
+        #          #    scrape_interval: 10s
+        #          #    honor_labels: true
+        #          #    static_configs:
+        #          #      - targets: ['pushgateway:9091']
+        #
 
 alerting:
   alertmanagers:

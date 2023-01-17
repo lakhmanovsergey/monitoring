@@ -1,11 +1,9 @@
 route:
   receiver: 'telegram'
   routes:
-  - match:
-    receiver: 'telegram_kt'
-    continue: true
-  - match:
-    receiver: 'telegram_OPS'
+    #  - match:
+    #    receiver: 'telegram_kt'
+    #    continue: true
 templates:
   - '/etc/alertmanager/templates/*.tmpl'
 receivers:
@@ -17,20 +15,20 @@ receivers:
         chat_id: -663588500
         message: '{{ template "telegram_simple.html.message" . }}'
         parse_mode: HTML
-
-  - name: 'telegram_kt'
-    telegram_configs:
-      - send_resolved: true
-        api_url: 'https://api.telegram.org'
-        bot_token: '***REMOVED***'
-        chat_id: -1001677807665
-        message: '{{ template "telegram_simple.html.message" . }}'
-        parse_mode: HTML
-  - name: 'telegram_OPS'
-    telegram_configs:
-      - send_resolved: true
-        api_url: 'https://api.telegram.org'
-        bot_token: '***REMOVED***'
-        chat_id: -1001703430358
-        message: '{{ template "telegram_simple.html.message" . }}'
-        parse_mode: HTML
+          #
+          #  - name: 'telegram_kt'
+          #    telegram_configs:
+          #      - send_resolved: true
+          #        api_url: 'https://api.telegram.org'
+          #        bot_token: '***REMOVED***'
+          #        chat_id: -1001677807665
+          #        message: '{{ template "telegram_simple.html.message" . }}'
+          #        parse_mode: HTML
+          #  - name: 'telegram_OPS'
+          #    telegram_configs:
+          #      - send_resolved: true
+          #        api_url: 'https://api.telegram.org'
+          #        bot_token: '***REMOVED***'
+          #        chat_id: -1001703430358
+          #        message: '{{ template "telegram_simple.html.message" . }}'
+          #        parse_mode: HTML
