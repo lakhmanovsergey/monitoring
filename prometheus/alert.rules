@@ -1,5 +1,5 @@
 groups:
-- name: targets
+- name: instances
   rules:
 
 - name: host
@@ -21,7 +21,7 @@ groups:
       severity: critical
     annotations:
       summary: "Server under high load"
-      description: "Host {{ $labels.target }} is under high load, the avg of CPU load 1m is at {{ $value}}."
+      description: "Host {{ $labels.instance }} is under high load, the avg of CPU load 1m is at {{ $value}}."
 
   - alert: high_memory_load
     expr: (sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes) ) / sum(node_memory_MemTotal_bytes) * 100 > 90
@@ -30,7 +30,7 @@ groups:
       severity: critical
     annotations:
       summary: "Server memory is almost full"
-      description: "Host {{ $labels.target }} memory usage is {{ humanize $value}}%."
+      description: "Host {{ $labels.instance }} memory usage is {{ humanize $value}}%."
 
   - alert: high_storage_load
     expr: 100 - ((node_filesystem_avail_bytes{device!~'rootfs'} * 100) / node_filesystem_size_bytes{device!~'rootfs'}) > 90
@@ -39,7 +39,7 @@ groups:
       severity: critical
     annotations:
       summary: "Server storage is almost full"
-      description: "Host {{ $labels.target }} storage usage is {{ humanize $value}}%."
+      description: "Host {{ $labels.instance }} storage usage is {{ humanize $value}}%."
 
   - alert: low_input_voltage
     expr: (up{job="nut"} == 0) or (nut_input_voltage_volts < 200)
@@ -48,7 +48,7 @@ groups:
       severity: critical
     annotations:
       summary: "Low voltage or UPS unavailable"
-      description: "Input {{ $labels.target }} voltage or UPS connect error {{ humanize $value}}."
+      description: "Input {{ $labels.instance }} voltage or UPS connect error {{ humanize $value}}."
 
   - alert: certificate_expire_14
     expr: round(((ssl_cert_not_after - time() < 86400 * 14)) / 86400)

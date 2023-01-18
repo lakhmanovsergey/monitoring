@@ -5,11 +5,11 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-      monitor: 'docker-host-alpha'
+      monitor: 'anav_core'
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
-  - "alert.rules"
+  - "alert_ru.rules"
 
 # A scrape configuration containing exactly one endpoint to scrape.
 scrape_configs:
@@ -159,19 +159,22 @@ scrape_configs:
     params:
       'match[]':
         - '{job="node-exporter"}'
-        - '{job="mikrotik"}'
         - '{job="snmp_apcups"}'
+        - '{job="ipmi"}'
     static_configs:
       - targets:
         - '192.168.120.8:9090'
+        - '192.168.120.101:9090'
         - '192.168.130.202:9090'
+        - '192.168.130.101:9090'
         - '192.168.140.202:9090'
+        - '192.168.140.101:9090'
 
-  - job_name: 'pushgateway'
-    scrape_interval: 10s
-    honor_labels: true
-    static_configs:
-      - targets: ['pushgateway:9091']
+          #  - job_name: 'pushgateway'
+          #    scrape_interval: 10s
+          #    honor_labels: true
+          #    static_configs:
+          #      - targets: ['pushgateway:9091']
 
 
 alerting:
