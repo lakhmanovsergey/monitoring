@@ -8,7 +8,7 @@ global:
     monitor: 'host-Ulianov'
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
-  - "alert.rules"
+  - "alert_ru.rules"
 
 # A scrape configuration containing exactly one endpoint to scrape.
 scrape_configs:
