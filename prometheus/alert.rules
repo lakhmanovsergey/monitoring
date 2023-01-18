@@ -12,7 +12,7 @@ groups:
       severity: critical
     annotations:
       summary: "Ping to host is unreachable"
-      description: Host {{ $labels.instance }}
+      description: Host {{ $labels.target }}
 
   - alert: high_cpu_load
     expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 90

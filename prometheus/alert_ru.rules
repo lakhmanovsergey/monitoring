@@ -13,7 +13,7 @@ groups:
     annotations:
       summary_down: "Сетевой узел недоступен"
       summary_up: "Сетевой узел доступен"
-      description: Имя узла {{ $labels.instance }}
+      description: Имя узла {{ $labels.target }}
 
   - alert: high_cpu_load
     expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 90
