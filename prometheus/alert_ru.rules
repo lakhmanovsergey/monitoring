@@ -1,0 +1,96 @@
+groups:
+- name: targets
+  rules:
+  - alert: node_service_down
+    expr: up{job!="prometheus"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary_down: "Цель мониторинга недоступна"
+      summary_up: "Цель мониторинга доступна"
+      description: "Цель {{ $labels.instance }}, задача  {{ $labels.job }}."
+
+- name: host
+  rules:
+
+  - alert: ping
+    expr: ping_loss_ratio{instance="ping:9427"} == 1
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary_down: "Сетевой узел недоступен"
+      summary_up: "Сетевой узел доступен"
+      description: Имя узла {{ $labels.target }}
+
+  - alert: high_cpu_load
+    expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 90
+    for: 15s
+    labels:
+      severity: warning
+    annotations:
+      summary_down: "Процессор(ы) перегружены"
+      summary_up: "Загрузка процессоров востановлена"
+      description: "На узле {{ $labels.target }} средняя загрузка ЦПУ за 1 мин = {{ $value}}."
+
+  - alert: high_memory_load
+    expr: (sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes) ) / sum(node_memory_MemTotal_bytes) * 100 > 90
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary_down: "Оперативная память близка к переполнению"
+      summary_up: "Оперативной памяти достаточно"
+      description: "На узле {{ $labels.target }} использование ОП = {{ humanize $value}}%."
+
+  - alert: high_storage_load
+    expr: 100 - ((node_filesystem_avail_bytes{device!~'rootfs'} * 100) / node_filesystem_size_bytes{device!~'rootfs'}) > 90
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary_down: "Хранилище близко к переполнению"
+      summary_up: "Объем хранилища достаточен"
+      description: "На узле {{ $labels.target }}, диск: {{ $labels.target }}, ФС: {{ $labels.target }}, точка монтирования: {{ $labels.target }} использовано  {{ humanize $value}}% объема."
+
+  - alert: low_input_voltage
+    expr: (up{job="nut"} == 0) or (nut_input_voltage_volts < 200)
+    for: 15s
+    labels:
+      severity: critical
+    annotations:
+      summary_down: "Низкое входное напряжение"
+      summary_up: "Входное напряжение в норме"
+      description: "На ИБП {{ $labels.target }} входное напряжение = {{ humanize $value}}."
+
+  - alert: temp_out_of_bounds
+    expr: upsAdvBatteryTemperature > 35 or upsAdvBatteryTemperature < 25
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      summary_down: "Температура ИБП вне пределов"
+      summary_up: "Температура ИБП в норме"
+      description: "UPS {{ $labels.target }} temperature is {{ humanize $value}}."
+
+  - alert: certificate_expire_14
+    expr: round(((ssl_cert_not_after - time() < 86400 * 14)) / 86400)
+    for: 15m
+    labels:
+      severity: warning
+    annotations:
+      summary_down: "14  дней до истечения сертификата"
+      summary_up: "Более 14 дней до истечения сертификата"
+      description: "Сертификат cn={{ $labels.cn }} issuer_cn={{ $labels.issuer_cn }} серийный номер {{ $labels.iserial_no }} для {{ $labels.dnsnames }} истечет {{ humanize $value}}."
+
+  - alert: certificate_expire_7
+    expr: round(((ssl_cert_not_after - time() < 86400 * 7)) / 86400)
+    for: 15m
+    labels:
+      severity: warning
+    annotations:
+      severity: critical
+      summary_down: "7 дней до истечения сертификата"
+      summary_up: "Более 7 дней до истечения сертификата"
+      description: "Сертификат cn={{ $labels.cn }} issuer_cn={{ $labels.issuer_cn }} серийный номер {{ $labels.iserial_no }} для {{ $labels.dnsnames }} истечет {{ humanize $value}}."
