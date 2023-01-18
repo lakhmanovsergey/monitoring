@@ -64,7 +64,7 @@ groups:
       summary_up: "Входное напряжение в норме"
       description: "На ИБП {{ $labels.target }} входное напряжение = {{ humanize $value}}."
 
-- alert: temp_out_of_bounds
+  - alert: temp_out_of_bounds
     expr: upsAdvBatteryTemperature > 35 or upsAdvBatteryTemperature < 25
     for: 3m
     labels:
