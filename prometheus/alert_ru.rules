@@ -1,5 +1,5 @@
 groups:
-- name: targets
+- name: instances
   rules:
   - alert: node_service_down
     expr: up{job!="prometheus"} == 0
@@ -22,7 +22,7 @@ groups:
     annotations:
       summary_down: "Сетевой узел недоступен"
       summary_up: "Сетевой узел доступен"
-      description: Имя узла {{ $labels.target }}
+      description: Имя узла {{ $labels.instance }}
 
   - alert: high_cpu_load
     expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 90
@@ -32,7 +32,7 @@ groups:
     annotations:
       summary_down: "Процессор(ы) перегружены"
       summary_up: "Загрузка процессоров востановлена"
-      description: "На узле {{ $labels.target }} средняя загрузка ЦПУ за 1 мин = {{ $value}}."
+      description: "На узле {{ $labels.instance }} средняя загрузка ЦПУ за 1 мин = {{ $value}}."
 
   - alert: high_memory_load
     expr: (sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes) ) / sum(node_memory_MemTotal_bytes) * 100 > 90
@@ -42,7 +42,7 @@ groups:
     annotations:
       summary_down: "Оперативная память близка к переполнению"
       summary_up: "Оперативной памяти достаточно"
-      description: "На узле {{ $labels.target }} использование ОП = {{ humanize $value}}%."
+      description: "На узле {{ $labels.instance }} использование ОП = {{ humanize $value}}%."
 
   - alert: high_storage_load
     expr: 100 - ((node_filesystem_avail_bytes{device!~'rootfs'} * 100) / node_filesystem_size_bytes{device!~'rootfs'}) > 90
@@ -52,7 +52,7 @@ groups:
     annotations:
       summary_down: "Хранилище близко к переполнению"
       summary_up: "Объем хранилища достаточен"
-      description: "На узле {{ $labels.target }}, диск: {{ $labels.target }}, ФС: {{ $labels.target }}, точка монтирования: {{ $labels.target }} использовано  {{ humanize $value}}% объема."
+      description: "На узле {{ $labels.instance }}, диск: {{ $labels.device }}, ФС: {{ $labels.fstype }}, точка монтирования: {{ $labels.mountpoint }} использовано  {{ humanize $value}}% объема."
 
   - alert: low_input_voltage
     expr: (up{job="nut"} == 0) or (nut_input_voltage_volts < 200)
@@ -62,7 +62,7 @@ groups:
     annotations:
       summary_down: "Низкое входное напряжение"
       summary_up: "Входное напряжение в норме"
-      description: "На ИБП {{ $labels.target }} входное напряжение = {{ humanize $value}}."
+      description: "На ИБП {{ $labels.instance }} входное напряжение = {{ humanize $value}}."
 
   - alert: temp_out_of_bounds
     expr: upsAdvBatteryTemperature > 35 or upsAdvBatteryTemperature < 25
@@ -72,4 +72,4 @@ groups:
     annotations:
       summary_down: "Температура ИБП вне пределов"
       summary_up: "Температура ИБП в норме"
-      description: "UPS {{ $labels.target }} temperature is {{ humanize $value}}."
+      description: "UPS {{ $labels.instance }} temperature is {{ humanize $value}}."
