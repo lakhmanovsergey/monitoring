@@ -46,7 +46,7 @@ groups:
       description: "На узле {{ $labels.instance }}, диск: {{ $labels.device }}, ФС: {{ $labels.fstype }}, точка монтирования: {{ $labels.mountpoint }} использовано  {{ humanize $value}}% объема."
 
   - alert: low_input_voltage
-    expr: (up{job="nut"} == 0) or (nut_input_voltage_volts < 200)
+    expr: nut_input_voltage_volts < 200
     for: 15s
     labels:
       severity: critical
