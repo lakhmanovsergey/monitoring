@@ -57,6 +57,24 @@ scrape_configs:
       - target_label: __address__
         replacement: snmp:9116  # The SNMP exporter's real hostname:port.
 
+  - job_name: 'snmp_cyberpower'
+    static_configs:
+      - targets:
+        - 172.20.1.1
+    metrics_path: /snmp
+    params:
+      module:
+        - cyberpower
+    scrape_interval: 1m
+    scrape_timeout: 1m
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
+
   - job_name: 'prometheus'
     scrape_interval: 10s
     static_configs:
