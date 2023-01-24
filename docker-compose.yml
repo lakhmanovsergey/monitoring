@@ -155,6 +155,18 @@ services:
     labels:
       org.label-schema.group: "monitoring"
 
+  pve:
+    image: prompve/prometheus-pve-exporter
+    container_name: pve
+    volumes:
+      - ./pve/pve.yml:/etc/pve.yml
+    ports:
+      - 9221:9221
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
         #  mikrotik:
         #    image: nshttpd/mikrotik-exporter:1.0.11
         #    container_name: mikrotik
