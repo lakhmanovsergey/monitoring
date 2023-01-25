@@ -198,6 +198,34 @@ scrape_configs:
           #    static_configs:
           #      - targets: ['pushgateway:9091']
 
+ - job_name: ipmi
+    params:
+      module: ['default']
+    scrape_interval: 1m
+    scrape_timeout: 30s
+    metrics_path: /ipmi
+    scheme: http
+    static_configs:
+      - targets:
+        - 172.20.1.202
+    relabel_configs:
+      - source_labels: [__address__]
+        separator: ;
+        regex: (.*)
+        target_label: __param_target
+        replacement: ${1}
+        action: replace
+      - source_labels: [__param_target]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: ${1}
+        action: replace
+      - separator: ;
+        regex: .*
+        target_label: __address__
+        replacement: ipmi:9290
+        action: replace
 
 alerting:
   alertmanagers:
