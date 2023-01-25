@@ -198,7 +198,7 @@ scrape_configs:
           #    static_configs:
           #      - targets: ['pushgateway:9091']
 
- - job_name: ipmi
+  - job_name: ipmi
     params:
       module: ['default']
     scrape_interval: 1m
