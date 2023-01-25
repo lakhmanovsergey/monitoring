@@ -21,6 +21,7 @@ scrape_configs:
         - 172.24.95.201:9100
         - 192.168.131.202:9100
         - 172.24.98.101:9100
+        - 172.20.1.250:9100
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
