@@ -11,7 +11,7 @@ modules:
                 # specified module doesn't exist, or of course if
                 # module=default is specified.
                 user: "ADMIN"
-                pass: "20EnaV22"
+                pass: "20EnaV20"
                 # The below settings correspond to driver-type, privilege-level, and
                 # session-timeout respectively, see `man 5 freeipmi.conf` (and e.g.
                 # `man 8 ipmi-sensors` for a list of driver types).
