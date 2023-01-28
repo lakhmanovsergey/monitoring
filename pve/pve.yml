@@ -1,0 +1,7 @@
+default:
+    user: prometheus_user@pve
+      #token_name: "prometheus_user@pve!prometheus_token"
+      #token_value: "1ca0abd1-2d9b-4f50-985b-e9f72e2fb9b3"
+    password: 2bRv37Ga
+    # Optional: set to false to skip SSL/TLS verification
+    verify_ssl: false

@@ -21,6 +21,7 @@ scrape_configs:
         - 172.24.95.201:9100
         - 192.168.131.202:9100
         - 172.24.98.101:9100
+        - 172.20.1.250:9100
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
@@ -57,6 +58,24 @@ scrape_configs:
       - target_label: __address__
         replacement: snmp:9116  # The SNMP exporter's real hostname:port.
 
+  - job_name: 'snmp_cyberpower'
+    static_configs:
+      - targets:
+        - 172.20.1.203
+    metrics_path: /snmp
+    params:
+      module:
+        - cyberpower
+    scrape_interval: 1m
+    scrape_timeout: 1m
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
+
   - job_name: 'prometheus'
     scrape_interval: 10s
     static_configs:
@@ -65,10 +84,18 @@ scrape_configs:
   - job_name: 'pve-exporter'
     scrape_interval: 5s
     static_configs:
-      - targets: ['172.24.0.52:9221']
+      - targets:
+        - 172.20.1.250
     metrics_path: /pve
     params:
       module: [default]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: pve:9221
 
   - job_name: 'snmp_switch'
     static_configs:
@@ -145,12 +172,6 @@ scrape_configs:
       - target_label: __address__
         replacement: certs:9219
 
-  - job_name: "mikrotik"
-    static_configs:
-      - targets:
-        - mikrotik:9436
-    metrics_path: /metrics
-
   - job_name: 'federate'
     scrape_interval: 3m
     scrape_timeout: 2m
@@ -160,6 +181,7 @@ scrape_configs:
       'match[]':
         - '{job="node-exporter"}'
         - '{job="snmp_apcups"}'
+        - '{job="snmp_mikrotik"}'
         - '{job="ipmi"}'
     static_configs:
       - targets:
@@ -176,6 +198,34 @@ scrape_configs:
           #    static_configs:
           #      - targets: ['pushgateway:9091']
 
+  - job_name: ipmi
+    params:
+      module: ['default']
+    scrape_interval: 1m
+    scrape_timeout: 30s
+    metrics_path: /ipmi
+    scheme: http
+    static_configs:
+      - targets:
+        - 172.20.1.202
+    relabel_configs:
+      - source_labels: [__address__]
+        separator: ;
+        regex: (.*)
+        target_label: __param_target
+        replacement: ${1}
+        action: replace
+      - source_labels: [__param_target]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: ${1}
+        action: replace
+      - separator: ;
+        regex: .*
+        target_label: __address__
+        replacement: ipmi:9290
+        action: replace
 
 alerting:
   alertmanagers:

@@ -46,7 +46,17 @@ groups:
       description: "На узле {{ $labels.instance }}, диск: {{ $labels.device }}, ФС: {{ $labels.fstype }}, точка монтирования: {{ $labels.mountpoint }} использовано  {{ humanize $value}}% объема."
 
   - alert: low_input_voltage
-    expr: (up{job="nut"} == 0) or (nut_input_voltage_volts < 200)
+    expr: nut_input_voltage_volts < 200
+    for: 15s
+    labels:
+      severity: critical
+    annotations:
+      summary_down: "Низкое входное напряжение"
+      summary_up: "Входное напряжение в норме"
+      description: "На ИБП {{ $labels.instance }} входное напряжение = {{ humanize $value}}."
+
+  - alert: low_input_voltage_cyberpower
+    expr: upsInputVoltage < 200
     for: 15s
     labels:
       severity: critical

@@ -155,15 +155,30 @@ services:
     labels:
       org.label-schema.group: "monitoring"
 
-        #  mikrotik:
-        #    image: nshttpd/mikrotik-exporter:1.0.11
-        #    container_name: mikrotik
-        #    expose:
-        #      - 9436
-        #    volumes:
-        #      - ./mikrotik:/config
-        #    environment:
-        #      - CONFIG_FILE=/config/config.yml
-        #    restart: unless-stopped
-        #    networks:
-        #      - monitor-net
+  pve:
+    image: prompve/prometheus-pve-exporter
+    container_name: pve
+    volumes:
+      - ./pve/pve.yml:/etc/pve.yml
+    expose:
+      - 9221
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
+  ipmi:
+    image: prometheuscommunity/ipmi-exporter:v1.6.1
+    container_name: ipmi
+    volumes:
+      - ./ipmi/ipmi_remote.yml:/config.yml:ro    # replace with your own config
+    expose:
+      - 9290                           # bind on 0.0.0.0
+    restart: unless-stopped
+    networks:
+      - monitor-net
+    command:
+      - '--config.file=/config.yml'
+    labels:
+      org.label-schema.group: "monitoring"
