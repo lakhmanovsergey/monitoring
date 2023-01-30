@@ -41,8 +41,8 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
     restart: unless-stopped
-    expose:
-      - 9093
+    ports:
+      - 9093:9093
     networks:
       - monitor-net
     labels:
@@ -101,7 +101,7 @@ services:
     ports:
       - "3000:3000"
       - "9090:9090"
-      - "9093:9093"
+        #      - "9093:9093"
       - "9116:9116"
       - "9427:9427"
       - "9436:9436"
