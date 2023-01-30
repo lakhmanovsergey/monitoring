@@ -2,7 +2,7 @@ groups:
 - name: instances
   rules:
   - alert: node_service_down
-    expr: up{job!="prometheus"} == 0
+    expr: up{job!="prometheus",job!="federate"} == 0
     for: 5m
     labels:
       severity: critical
