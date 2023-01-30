@@ -6,7 +6,7 @@ groups:
   rules:
 
   - alert: ping
-    expr: ping_loss_ratio{instance="ping:9427"} == 1
+    expr: ping_loss_ratio{instance="ping:9427"} == 0.9
     for: 5m
     labels:
       severity: critical
