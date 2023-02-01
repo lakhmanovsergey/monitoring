@@ -1,6 +1,15 @@
 groups:
 - name: instances
   rules:
+  - alert: node_service_down
+    expr: up{job!="prometheus",job!="federate"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary_down: "Цель мониторинга недоступна"
+      summary_up: "Цель мониторинга доступна"
+      description: "Цель {{ $labels.instance }}, задача  {{ $labels.job }}."
 
 - name: host
   rules:
