@@ -9,3 +9,11 @@ datasources:
     basicAuth: false
     isDefault: true
     editable: true
+#  - name: Alertmanager
+#    type: alertmanager
+#    url: http://alertmanager:9093
+#    access: proxy
+#    jsonData:
+#	basicAuth: false
+#    basicAuthUser:
+#    basicAuthPassword:
