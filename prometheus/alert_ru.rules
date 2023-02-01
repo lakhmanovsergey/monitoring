@@ -65,7 +65,7 @@ groups:
       description: "На ИБП {{ $labels.instance }} входное напряжение = {{ humanize $value}}."
 
   - alert: low_input_voltage_cyberpower
-    expr: upsInputVoltage < 200
+    expr: upsInputVoltage < 200 or upsAdvInputLineVoltage < 200
     for: 15s
     labels:
       severity: critical
