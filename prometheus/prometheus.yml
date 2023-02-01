@@ -1,0 +1,133 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'anav_core'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "alert_ru.rules"
+
+# A scrape configuration containing exactly one endpoint to scrape.
+scrape_configs:
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets:
+        - 172.24.98.101:9100
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '([^:]+)(:[0-9]+)?'
+        replacement: '$1'
+
+  - job_name: 'nvidia-gpu-exporter'
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+        - 172.24.98.101:9835
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '([^:]+)(:[0-9]+)?'
+        replacement: '$1'
+
+  - job_name: 'snmp_mikrotik'
+    static_configs:
+      - targets:
+        - 172.24.98.1
+    metrics_path: /snmp
+    params:
+      module:
+        - mikrotik
+    scrape_interval: 5m
+    scrape_timeout: 5m
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
+
+  - job_name: 'snmp_apcups'
+    static_configs:
+      - targets:
+        - 172.24.98.6
+    metrics_path: /snmp
+    params:
+      module:
+        - apcups
+    scrape_interval: 3m
+    scrape_timeout: 3m
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
+
+  - job_name: 'prometheus'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'snmp_switch'
+    static_configs:
+      - targets:
+        - 172.24.98.2
+    metrics_path: /snmp
+    params:
+      module: [if_mib]
+    scrape_interval: 180s
+    scrape_timeout: 150s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
+
+  - job_name: 'snmp_synology'
+    static_configs:
+      - targets:
+        - 172.24.98.51
+    metrics_path: /snmp
+    params:
+      module: [synology]
+    scrape_interval: 20s
+    scrape_timeout: 15s
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp:9116  # The SNMP exporter's real hostname:port.
+
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: certs:9219
+
+          #  - job_name: 'pushgateway'
+          #    scrape_interval: 10s
+          #    honor_labels: true
+          #    static_configs:
+          #      - targets: ['pushgateway:9091']
+
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets: 
+      - '172.24.0.65:9093'
+
