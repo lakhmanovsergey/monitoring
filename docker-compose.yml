@@ -20,8 +20,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
     restart: unless-stopped
-	ports:
-	- "3000:3000"
+  ports:
+  - "3000:3000"
     networks:
       - monitor-net
     labels:
@@ -65,8 +65,8 @@ services:
       - ./loki:/etc/loki
     restart: unless-stopped
     command: -config.file=/etc/loki/local-config.yaml
-  	ports:
-  	- "3100:3100"
+  ports:
+    - "3100:3100"
     - "9096:9096"
       networks:
         - monitor-net
@@ -79,7 +79,7 @@ services:
     volumes:
       - ./snmp/snmp.yml:/etc/snmp_exporter/snmp.yml
     restart: always
-  	ports:
+      ports:
     - "9116:9116"
       networks:
         - monitor-net
