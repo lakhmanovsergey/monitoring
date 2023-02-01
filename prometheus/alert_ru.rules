@@ -54,8 +54,8 @@ groups:
       summary_up: "Объем хранилища достаточен"
       description: "На узле {{ $labels.instance }}, диск: {{ $labels.device }}, ФС: {{ $labels.fstype }}, точка монтирования: {{ $labels.mountpoint }} использовано  {{ humanize $value}}% объема."
 
-  - alert: low_input_voltage
-    expr: nut_input_voltage_volts < 200
+  - alert: low_input_voltage_APC
+    expr: upsAdvInputLineVoltage < 200
     for: 15s
     labels:
       severity: critical
@@ -63,33 +63,3 @@ groups:
       summary_down: "Низкое входное напряжение"
       summary_up: "Входное напряжение в норме"
       description: "На ИБП {{ $labels.instance }} входное напряжение = {{ humanize $value}}."
-
-  - alert: low_input_voltage_cyberpower
-    expr: upsInputVoltage < 200 or upsAdvInputLineVoltage < 200
-    for: 15s
-    labels:
-      severity: critical
-    annotations:
-      summary_down: "Низкое входное напряжение"
-      summary_up: "Входное напряжение в норме"
-      description: "На ИБП {{ $labels.instance }} входное напряжение = {{ humanize $value}}."
-
-  - alert: certificate_expire_14
-    expr: round(((ssl_cert_not_after - time() < 86400 * 14)) / 86400)
-    for: 15m
-    labels:
-      severity: warning
-    annotations:
-      summary_down: "14  дней до истечения сертификата"
-      summary_up: "Более 14 дней до истечения сертификата"
-      description: "Сертификат cn={{ $labels.cn }} issuer_cn={{ $labels.issuer_cn }} серийный номер {{ $labels.iserial_no }} для {{ $labels.dnsnames }} истечет {{ humanize $value}}."
-
-  - alert: certificate_expire_7
-    expr: round(((ssl_cert_not_after - time() < 86400 * 7)) / 86400)
-    for: 15m
-    labels:
-      severity: critical
-    annotations:
-      summary_down: "7 дней до истечения сертификата"
-      summary_up: "Более 7 дней до истечения сертификата"
-      description: "Сертификат cn={{ $labels.cn }} issuer_cn={{ $labels.issuer_cn }} серийный номер {{ $labels.iserial_no }} для {{ $labels.dnsnames }} истечет {{ humanize $value}}."
