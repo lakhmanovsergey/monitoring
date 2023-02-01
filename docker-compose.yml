@@ -1,9 +1,12 @@
+version: '2.1'
+
 networks:
   monitor-net:
     driver: bridge
+
 volumes:
-    prometheus_data: {}
-    grafana_data: {}
+  prometheus_data: {}
+  grafana_data: {}
 
 services:
 
@@ -20,14 +23,14 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
     restart: unless-stopped
-  ports:
-  - "3000:3000"
+    ports:
+      - 3000:3000
     networks:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
 
- prometheus:
+  prometheus:
     image: prom/prometheus:v2.38.0
     container_name: prometheus
     volumes:
@@ -65,13 +68,13 @@ services:
       - ./loki:/etc/loki
     restart: unless-stopped
     command: -config.file=/etc/loki/local-config.yaml
-  ports:
-    - "3100:3100"
-    - "9096:9096"
-      networks:
-        - monitor-net
-      labels:
-        org.label-schema.group: "monitoring"
+    ports:
+      - 3100:3100
+      - 9096:9096
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
 
   snmp:
     image: prom/snmp-exporter
@@ -79,9 +82,9 @@ services:
     volumes:
       - ./snmp/snmp.yml:/etc/snmp_exporter/snmp.yml
     restart: always
-      ports:
-    - "9116:9116"
-      networks:
-        - monitor-net
-      labels:
-        org.label-schema.group: "monitoring"
+    ports:
+      - 9116:9116
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
