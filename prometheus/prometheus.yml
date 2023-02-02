@@ -63,12 +63,6 @@ scrape_configs:
       - target_label: __address__
         replacement: snmp:9116  # The SNMP exporter's real hostname:port.
 
-          #  - job_name: "mikrotik"
-          #    static_configs:
-          #      - targets:
-          #        - mikrotik:9436
-          #    metrics_path: /metrics
-
   - job_name: ipmi
     params:
       module: ['default']
@@ -99,30 +93,6 @@ scrape_configs:
         replacement: ipmi:9290
         action: replace
 
-<<<<<<< HEAD
-||||||| 41300d5
-  - job_name: 'federate'
-    honor_labels: true
-    metrics_path: '/federate'
-    params:
-      'match[]':
-        - '{job="prometheus"}'
-    static_configs:
-      - targets:
-        - '192.168.120.101:9090'
-
-=======
-          #  - job_name: 'federate'
-          #    honor_labels: true
-          #    metrics_path: '/federate'
-          #    params:
-          #      'match[]':
-          #        - '{job="prometheus"}'
-          #    static_configs:
-          #      - targets:
-          #        - '192.168.120.101:9090'
-
->>>>>>> 49e2ff6cabec3f16e6bf2b90a62dd098b9c1f9f3
 alerting:
   alertmanagers:
   - scheme: http
