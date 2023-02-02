@@ -99,6 +99,30 @@ scrape_configs:
         replacement: ipmi:9290
         action: replace
 
+<<<<<<< HEAD
+||||||| 41300d5
+  - job_name: 'federate'
+    honor_labels: true
+    metrics_path: '/federate'
+    params:
+      'match[]':
+        - '{job="prometheus"}'
+    static_configs:
+      - targets:
+        - '192.168.120.101:9090'
+
+=======
+          #  - job_name: 'federate'
+          #    honor_labels: true
+          #    metrics_path: '/federate'
+          #    params:
+          #      'match[]':
+          #        - '{job="prometheus"}'
+          #    static_configs:
+          #      - targets:
+          #        - '192.168.120.101:9090'
+
+>>>>>>> 49e2ff6cabec3f16e6bf2b90a62dd098b9c1f9f3
 alerting:
   alertmanagers:
   - scheme: http

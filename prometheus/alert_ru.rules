@@ -2,7 +2,7 @@ groups:
 - name: instances
   rules:
   - alert: node_service_down
-    expr: up{job!="prometheus"} == 0
+    expr: up == 0
     for: 5m
     labels:
       severity: critical
@@ -55,7 +55,7 @@ groups:
       description: "На узле {{ $labels.instance }}, диск: {{ $labels.device }}, ФС: {{ $labels.fstype }}, точка монтирования: {{ $labels.mountpoint }} использовано  {{ humanize $value}}% объема."
 
   - alert: low_input_voltage
-    expr: (up{job="nut"} == 0) or (nut_input_voltage_volts < 200)
+    expr: upsAdvInputLineVoltage < 200
     for: 15s
     labels:
       severity: critical
