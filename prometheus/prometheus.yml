@@ -98,5 +98,5 @@ alerting:
   - scheme: http
     static_configs:
     - targets: 
-      - '172.24.0.65:9093'
+      - 'alertmanager:9093'
 
