@@ -32,6 +32,22 @@ services:
     labels:
       org.label-schema.group: "monitoring"
 
+  alertmanager:
+    image: prom/alertmanager:v0.24.0
+    container_name: alertmanager
+    volumes:
+      - ./alertmanager:/etc/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+    expose:
+      - 9093
+    networks:
+      - monitor-net
+    labels:
+      org.label-schema.group: "monitoring"
+
   grafana:
     image: grafana/grafana:9.1.1
     container_name: grafana
@@ -57,8 +73,8 @@ services:
     container_name: snmp
     volumes:
       - ./snmp/snmp.yml:/etc/snmp_exporter/snmp.yml
-    ports:
-      - 9116:9116
+    expose:
+      - 9116
     restart: unless-stopped
     networks:
       - monitor-net
@@ -70,8 +86,8 @@ services:
     container_name: ipmi
     volumes:
       - ./ipmi/ipmi_remote.yml:/config.yml:ro    # replace with your own config
-    ports:
-      - 9290:9290                           # bind on 0.0.0.0
+    expose:
+      - 9290
       # - 127.0.0.1:9290:9290               # or bind to specific interface
     restart: unless-stopped
     networks:
