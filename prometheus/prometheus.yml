@@ -5,7 +5,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-    monitor: 'host-Ulianov'
+    monitor: 'host-shalanda'
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
   - "alert_ru.rules"
@@ -16,9 +16,9 @@ scrape_configs:
   - job_name: 'node-exporter'
     static_configs:
       - targets:
-        - 192.168.140.201:9100
-        - 192.168.140.202:9100
-        - 192.168.140.101:9100
+        - 192.168.120.201:9100
+        - 192.168.120.202:9100
+        - 192.168.120.101:9100
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
@@ -28,12 +28,13 @@ scrape_configs:
   - job_name: 'snmp_apcups'
     static_configs:
       - targets:
-        - 192.168.140.6
-        - 192.168.140.7
+        - 192.168.120.6
+        - 192.168.120.7
     metrics_path: /snmp
     params:
-      module: [apcups]
-    scrape_interval: 3m
+      module:
+        - apcups
+    scrape_interval: 2m
     scrape_timeout: 2m
     relabel_configs:
       - source_labels: [__address__]
@@ -46,7 +47,8 @@ scrape_configs:
   - job_name: 'snmp_mikrotik'
     static_configs:
       - targets:
-        - 192.168.140.1
+        - 192.168.120.1
+        - 172.16.120.1
     metrics_path: /snmp
     params:
       module:
@@ -70,8 +72,8 @@ scrape_configs:
     scheme: http
     static_configs:
       - targets:
-        - 192.168.140.9
-        - 192.168.140.10
+        - 192.168.120.9
+        - 192.168.120.10
     relabel_configs:
       - source_labels: [__address__]
         separator: ;
@@ -91,19 +93,10 @@ scrape_configs:
         replacement: ipmi:9290
         action: replace
 
-          #  - job_name: 'federate'
-          #    honor_labels: true
-          #    metrics_path: '/federate'
-          #    params:
-          #      'match[]':
-          #        - '{job="prometheus"}'
-          #    static_configs:
-          #      - targets:
-          #        - '192.168.140.101:9090'
 alerting:
   alertmanagers:
   - scheme: http
     static_configs:
     - targets: 
-      - '172.24.0.65:9093'
+      - 'alertmanager:9093'
 
