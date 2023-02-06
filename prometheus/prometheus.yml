@@ -5,7 +5,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-    monitor: 'host-Anfisa'
+    monitor: 'host-shalanda'
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
   - "alert_ru.rules"
@@ -18,6 +18,7 @@ scrape_configs:
       - targets:
         - 192.168.130.201:9100
         - 192.168.130.202:9100
+        - 192.168.130.101:9100
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance
@@ -33,8 +34,8 @@ scrape_configs:
     params:
       module:
         - apcups
-    scrape_interval: 3m
-    scrape_timeout: 3m
+    scrape_interval: 2m
+    scrape_timeout: 2m
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -51,8 +52,8 @@ scrape_configs:
     params:
       module:
         - mikrotik
-    scrape_interval: 5m
-    scrape_timeout: 5m
+    scrape_interval: 2m
+    scrape_timeout: 2m
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -60,12 +61,6 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: snmp:9116  # The SNMP exporter's real hostname:port.
-
-          #  - job_name: "mikrotik"
-          #    static_configs:
-          #      - targets:
-          #        - mikrotik:9436
-          #    metrics_path: /metrics
 
   - job_name: ipmi
     params:
@@ -97,19 +92,10 @@ scrape_configs:
         replacement: ipmi:9290
         action: replace
 
-  - job_name: 'federate'
-    honor_labels: true
-    metrics_path: '/federate'
-    params:
-      'match[]':
-        - '{job="prometheus"}'
-    static_configs:
-      - targets:
-        - '192.168.130.101:9090'
-
 alerting:
   alertmanagers:
   - scheme: http
     static_configs:
     - targets: 
-      - '172.24.0.65:9093'
+      - 'alertmanager:9093'
+
